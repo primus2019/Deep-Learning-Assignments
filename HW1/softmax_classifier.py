@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.core.fromnumeric import prod
 
 def softmax_classifier(W, input, label, lamda):
     """
@@ -22,6 +23,17 @@ def softmax_classifier(W, input, label, lamda):
 
     ############################################################################
     # TODO: Put your code here
+
+    label1d = np.argmax(label, axis=1)
+    products = np.matmul(input, W)
+
+    prediction = np.argmax(products, axis=1)
+    loss = np.power(prediction - label1d, 2).mean()
+    gradient = np.zeros(W.shape)
+
+    for sample in range(input.shape[0]):
+      gradient += np.matmul((products[sample] - label[sample]).reshape(-1, 1), input[sample].reshape(-1, 1).T).T
+    gradient /= input.shape[0]
 
     ############################################################################
 
